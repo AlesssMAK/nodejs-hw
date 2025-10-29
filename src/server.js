@@ -25,6 +25,12 @@ app.use(
   }),
 );
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Hello Node.js',
+  });
+});
+
 app.get('/notes', (req, res) => {
   res.status(200).json({ message: 'Retrieved all notes' });
 });
