@@ -8,7 +8,7 @@ import notesRoutes from './routes/notesRoutes.js';
 import { connectMongoDB } from './db/connectMongoDB.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ?? 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -20,6 +20,8 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 await connectMongoDB();
+
+console.log('process.env.PORT =', process.env.PORT);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

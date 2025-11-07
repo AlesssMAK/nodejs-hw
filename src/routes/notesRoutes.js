@@ -9,12 +9,6 @@ import {
 
 const router = Router();
 
-// router.get('/', (req, res) => {
-//   res.status(200).json({
-//     message: 'Hello Node.js',
-//   });
-// });
-
 router.get('/notes', getAllNotes);
 
 router.get('/notes/:noteId', getNotesById);

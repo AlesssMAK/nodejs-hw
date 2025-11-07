@@ -12,6 +12,7 @@ const noteShema = new Schema(
       type: String,
       required: false,
       trim: true,
+      default: '',
     },
     tag: {
       type: String,
@@ -26,6 +27,7 @@ const noteShema = new Schema(
         'Finance',
         'Health',
       ],
+      default: 'Todo',
     },
   },
   {
