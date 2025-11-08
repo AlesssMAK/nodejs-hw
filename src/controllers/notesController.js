@@ -6,7 +6,7 @@ export const getAllNotes = async (req, res) => {
   res.status(200).json(notes);
 };
 
-export const getNotesById = async (req, res, next) => {
+export const getNoteById = async (req, res, next) => {
   const { noteId } = req.params;
   const note = await Note.findById(noteId);
 
@@ -24,7 +24,7 @@ export const createNote = async (req, res) => {
 
 export const deleteNote = async (req, res, next) => {
   const { noteId } = req.params;
-  const note = await Note.findByIdAndDelete({ _id: noteId });
+  const note = await Note.findOneAndDelete({ _id: noteId });
 
   if (!note) {
     next(createHttpError(404, 'Note not found'));
@@ -35,7 +35,7 @@ export const deleteNote = async (req, res, next) => {
 
 export const updateNote = async (req, res, next) => {
   const { noteId } = req.params;
-  const note = await Note.findByIdAndUpdate({ _id: noteId }, req.body, {
+  const note = await Note.findOneAndUpdate({ _id: noteId }, req.body, {
     new: true,
   });
 
