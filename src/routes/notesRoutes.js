@@ -3,7 +3,7 @@ import {
   createNote,
   deleteNote,
   getAllNotes,
-  getNotesById,
+  getNoteById,
   updateNote,
 } from '../controllers/notesController.js';
 
@@ -11,12 +11,12 @@ const router = Router();
 
 router.get('/notes', getAllNotes);
 
-router.get('/notes/:noteId', getNotesById);
+router.get('/notes/:noteId', getNoteById);
 
-router.get('/notes', createNote);
+router.post('/notes', createNote);
 
-router.get('/notes/:noteId', deleteNote);
+router.delete('/notes/:noteId', deleteNote);
 
-router.get('/notes/:noteId', updateNote);
+router.patch('/notes/:noteId', updateNote);
 
 export default router;
