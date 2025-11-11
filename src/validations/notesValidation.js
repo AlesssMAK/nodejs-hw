@@ -17,7 +17,7 @@ export const getAllNotesSchema = {
 
 export const noteIdSchema = {
   [Segments.PARAMS]: Joi.object({
-    notesId: Joi.string().custom(objectIdValidator).required(),
+    noteId: Joi.string().custom(objectIdValidator).required(),
   }),
 };
 
@@ -32,7 +32,7 @@ export const createNoteSchema = {
 export const updateNoteSchema = {
   ...noteIdSchema,
   [Segments.BODY]: Joi.object({
-    title: Joi.string().min(1).required(),
+    title: Joi.string().min(1).min(1),
     content: Joi.string().allow(''),
     tag: Joi.string().valid(...TAGS),
   }).min(1),
