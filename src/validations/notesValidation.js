@@ -32,8 +32,8 @@ export const createNoteSchema = {
 export const updateNoteSchema = {
   ...noteIdSchema,
   [Segments.BODY]: Joi.object({
-    title: Joi.string().min(1).min(1),
-    content: Joi.string().allow(''),
-    tag: Joi.string().valid(...TAGS),
+    title: Joi.string().min(1).optional(),
+    content: Joi.string().allow('').optional(),
+    tag: Joi.string().valid(...TAGS).optional(),
   }).min(1),
 };
