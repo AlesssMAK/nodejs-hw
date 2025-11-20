@@ -12,7 +12,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 
 const app = express();
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 3030;
 
 app.use(helmet());
 app.use(cors());

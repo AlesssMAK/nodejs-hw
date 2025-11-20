@@ -20,7 +20,7 @@ const noteSchema = new Schema(
       enum: TAGS,
       default: 'Todo',
     },
-    noteId: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,

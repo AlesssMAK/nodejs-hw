@@ -50,7 +50,7 @@ export const loginUser = async (req, res, next) => {
 
 export const refreshUserSession = async (req, res, next) => {
   const session = await Session.findOne({
-    _id: req.cookie.sessionId,
+    _id: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
 
@@ -69,7 +69,7 @@ export const refreshUserSession = async (req, res, next) => {
     refreshToken: req.cookies.refreshToken,
   });
 
-  const newSession = createSession(session.userId);
+  const newSession = await createSession(session.userId);
   setSessionCookies(res, newSession);
 
   res.status(200).json({ message: 'Session refreshed' });
