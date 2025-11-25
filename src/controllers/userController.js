@@ -3,11 +3,11 @@ import { User } from '../models/user.js';
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { sendEmail } from '../utils/sendEmail.js';
+import { sendMail } from '../utils/sendMail.js';
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { Session } from 'node:inspector/promises';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { Session } from '../models/session.js';
 
 export const requestResetEmail = async (req, res, next) => {
   const { email } = req.body;
@@ -19,7 +19,7 @@ export const requestResetEmail = async (req, res, next) => {
     return;
   }
 
-  const resetToken = jwt.sing(
+  const resetToken = jwt.sign(
     {
       sub: user._id,
       email,
@@ -37,7 +37,7 @@ export const requestResetEmail = async (req, res, next) => {
   });
 
   try {
-    await sendEmail({
+    await sendMail({
       from: process.env.SMTP_FROM,
       to: email,
       subject: 'Reset your password',
@@ -69,7 +69,7 @@ export const resetPassword = async (req, res, next) => {
     next(createHttpError(404, 'User not found'));
   }
 
-  const hashedPassword = bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
   await User.updateOne({ _id: user._id }, { password: hashedPassword });
 
   await Session.deleteMany({ userId: user._id });
