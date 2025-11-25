@@ -6,8 +6,8 @@ import fs from 'node:fs/promises';
 import { sendEmail } from '../utils/sendEmail.js';
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { Session } from 'node:inspector/promises';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { Session } from '../models/session.js';
 
 export const requestResetEmail = async (req, res, next) => {
   const { email } = req.body;
@@ -19,7 +19,7 @@ export const requestResetEmail = async (req, res, next) => {
     return;
   }
 
-  const resetToken = jwt.sing(
+  const resetToken = jwt.sign(
     {
       sub: user._id,
       email,
@@ -69,7 +69,7 @@ export const resetPassword = async (req, res, next) => {
     next(createHttpError(404, 'User not found'));
   }
 
-  const hashedPassword = bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
   await User.updateOne({ _id: user._id }, { password: hashedPassword });
 
   await Session.deleteMany({ userId: user._id });
