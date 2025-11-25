@@ -1,4 +1,4 @@
-import { jwt } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { User } from '../models/user.js';
 import handlebars from 'handlebars';
 import path from 'node:path';
