@@ -5,6 +5,8 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { sendEmail } from '../utils/sendEmail.js';
 import createHttpError from 'http-errors';
+import bcrypt from 'bcrypt';
+import { Session } from 'node:inspector/promises';
 
 export const requestResetEmail = async (req, res, next) => {
   const { email } = req.body;
@@ -48,4 +50,28 @@ export const requestResetEmail = async (req, res, next) => {
   }
 
   res.status(200).json({ message: 'Password reset email sent successfully' });
+};
+
+export const resetPassword = async (req, res, next) => {
+  const { token, password } = req.body;
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    next(createHttpError(401, 'Invalid or expired token'));
+    return;
+  }
+
+  const user = User.findOne({ _id: payload.sub, email: payload.email });
+  if (!user) {
+    next(createHttpError(404, 'User not found'));
+  }
+
+  const hashedPassword = bcrypt.hash(password, 10);
+  await User.updateOne({ _id: user._id }, { password: hashedPassword });
+
+  await Session.deleteMany({ userId: user._id });
+
+  res.status(200).json({ message: 'Password reset successfully' });
 };
