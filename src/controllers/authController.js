@@ -149,9 +149,10 @@ export const resetPassword = async (req, res, next) => {
     return;
   }
 
-  const user = User.findOne({ _id: payload.sub, email: payload.email });
+  const user = await User.findOne({ _id: payload.sub, email: payload.email });
   if (!user) {
     next(createHttpError(404, 'User not found'));
+    return;
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
